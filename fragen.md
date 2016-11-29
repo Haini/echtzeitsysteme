@@ -101,20 +101,62 @@ Sie besteht aus <Name, Time, Value> und wird als Nachricht verschickt.
     + ???
 
 ## Erklaeren Sie die Begriffe *Fail-Safe System* und *Fail-Operational System*. 
-Wie unterscheiden scih diese beiden Arten von Systemen in ihren Anforderungen?
+Wie unterscheiden sich diese beiden Arten von Systemen in ihren Anforderungen?
+
++ Fail-Safe hat einen sichern Zustand in der Umwelt den es im Fall eines Systemfehlers erreichen kann
+(z.B. Zugsignale)
+    + Fail Safeness ist eine Anwendungseigenschaft
+    + Hohe Fehlererkennungsabdeckung ist wichtig
+    + Verwendung von Watchdog oder Heartbeat Signal
++ Fail-Operational heiszt dass kein sicherer Zustand bei einem Fehler erreicht werden kann
+    + Das Computersystem muss also auch nach dem kritischen Fehler ein minimum an Service
+    aufrecht erhalten.
+    + Aktive Redundanz ist wichtig 
+    (Siehe Flugzeug, bei Absturz sollte man nicht alles abschalten und warten)
 
 ## Wie funktioniert *Christian's Algorithmus* zur Uhrensynchronisation?
++ Knoten p1 sendet Sync Request an Knoten p2, zum Zeitpunkt t0
++ Knoten p2 empfaengt zum Zeitpunkt t1, sendet T zum Zeitpunkt t2
++ Knoten p1 empfaengt zum Zeitpunkt t3
 
+Berechnung der Round-Trip Time *RTT* = $t_3 - t_0$.  
+Knoten p2 setzt seine lokale Zeit auf $T + \frac{d}{2}$.  
+Dadurch betraegt der *Clock Sync Error* maximal $\frac{d}{2}$
 ## Charakterisieren Sie die folgenden Interface Typen (6)
 
 + *Elementary Interface*
+    + Unidirectional control flow (e.g. dual ported ram)
+    + Information push to component (e.g. phone call, interrupt)
+    + Simpler than composite interface
 + *Composiste Interface*
+    + Bidirectional control flow (e.g. queue of event messages)
+    + Information pull when required (e.g. checking mail)
 + *Temporal Firewall Interface*
+    + Prohibits external control on a component
+    + Producer uses information push
+    + Consumer uses information pull
 
 ## Wie lauten die vier grundlegenden Aussagen zur Zeitmessung (*Fundamentals in Time Measurement*) .. (3)
-fuer ein verteiltes System mit globaler Zeitbasis der Granularitaet g?
+$\ldots$ fuer ein verteiltes System mit globaler Zeitbasis der Granularitaet g?
+
++ Wird ein Ereignis von zwei Knoten beobachtet koennen die Zeitstempel des Ereignisses um 
+einen Tick verschieden sein.
++ Messung der Dauer: $d_{obs} - 2g^{global} < d^{z}_{true} < d_{obs} + 2g^{global}$
++ Die zeitliche Ordnung von 2 Events e1 und e2 kann aus den Zeitstempeln abgelesen werden wenn gilt
+    + $|t^{j}(e1) - t^{k}(e2)| \geq 2$
++ Die zeitliche Reihenfolge von Events kann immer dann abgeleitet werden wenn die Eventmenge
+    + 0/$\Delta$ Vorausgehend ist und
+    + $\Delta \geq 3g^{global}$ 
 
 ## Wie definiert man im Kontext der Echtzeitsysteme eine Komponente? Wodurch ist diese Definition begruendet? (3)
+Wahrscheinlich um eine systemweite, konsistente Wahrnehmung von Zeit zu haben?  
+Eine Real Time Komponente
++ ist ein komplettes Computer System, z.B. ein Knoten
++ ist time aware
++ besteht aus
+    + Hardware
+    + Software
+    + State
 
 ## Was versteht man unter dem *Action Delay*?
 + Wie grosz ist der Action Delay in einem verteilten Echtzeitsysteme
