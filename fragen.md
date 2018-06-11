@@ -164,69 +164,158 @@ Eine Real Time Komponente
     + (b) mit globaler Zeitbasis?
 
 ## Wie funktioniert die Arbitrierung von Nachrichten in einem Minislotting Protokoll (z.B. ARINC629)?
++ Jeder Node hat eine bestimmte Zeit die er warten muss bevor er senden darf. Wenn in seiner Wartezeit
+kein Node mit einer kürzeren Wartezeit (höhere Priorität) sendet (da dieser ja weniger lang warten muss)
+kann der Node senden.
 
 ## Welche Anforderungen stellt man an eine globale Zeitbasis fuer ein Echtzeitsystem? (2)
++ Chronoskopisches verhalten (Keine Diskontinuitäten, auch während der resynchronisation)
++ Verwendetet die Metrische Sekunde
++ Known Precision
++ High Dependability
 
 ## Beschreiben Sie die statischen und die dynamischen Attribute einer RT-Entity. (3)
++ Statisch
+	+ Name
+	+ Type
+	+ Value Domain
+	+ Max. rate of change
++ Dynamisch
+	+ Wert
 
 ## Wie funktioniert die Arbitration in einem CAN-Netzwerk? (4)
++ CSMA/CR
 
 ## Skizzieren Sie einen *Fail-Silent TTP Node* und beschreiben Sie dessen Komponenten und deren Aufgaben kurz. (2)
++ Besteht aus einem Host, einem TTP Controller (für das Protokoll) und einem Bus-Guardion der weiß wann der TTP Controller
+senden darf. Falls dieser außerhalb seines Zeitslotes senden will (Babbling Idiot) dreht der Bus-Guardian einfach den 
+Bus Zugriff ab. Wird verwendet um die Fail-Silent Annahme zu verstärken.
 
 ## Was versteht man unter einem *H-State* und einem *G-State*? Beschreiben Sie die Bedeutung dieser beiden Konzepte. (2)
++ Der H-State (History State) beschreibt die notwendige Information (State) um einen initialisierten Node an einem bestimmten
+Zeitpunkt zu starten.
++ Der G-State ist der minimalste H-State (keine Pending Messages ..)
 
 ## Welche Eigenschaften muessen beschrieben werden, um das Echtzeit-Interface.. (2)
 (Linking Interface) zwischen Subsystemen und Echtzeitsystemen vollstaendig zu Charakterisieren?
++ (Ich glaube er meint):
++ Temporal Preconditions
+	+ wann Inputs available sind
++ Temporal Postconditions:
+	+ wann die Outputs available sind
++ Functional Properties
 
 ## Wie lautet die *Reasonableness Condition* fuer eine globale Zeitbasis? (2)
-
-+ Welche Konsequenzen hat eine Verletzung der Reasonableness Condition
++ In einem System mit der gleichen Zeitbasis darf die Precision höchstens ein Macrotick sein.
++ Welche Konsequenzen hat eine Verletzung der Reasonableness Condition?
++ Der Timestamp eines Events gemessen von zwei unterschiedlichen Nodes kann sich um mehr als
+1 Tick unterscheiden.
 
 ## In welchem Verhaeltnis stehen *kausale* und *temporale* Ordnung? (2)
++ Kausal impliziert Temporal, aber nicht umgekehrt
 
 ## Erklaeren Sie die Funktionsweise des *Central Master Algorithm* zur Uhrensynchronisation.
-
++ Ein Central Master schickt periodisch seine locale Zeit aus.
 + Welche Precision kann mit diesem Algorithmus erreicht werden?
++ Precision = 2*(Drift Rate)*(Resync Intervall) + (Jitter)
 
 ## Erklaeren Sie die Funktionsweise eines zeitgesteuerten Kommunikationsprotokolls. (2)
++ Jeder Teilnehmer weiß a priori wann er Buszugriff hat. Daher muss man bei den Nachrichten
+auch keine Identifikation mitschicken, da diese Information, Zeitabhängig, jeder Teilnehmer schon hat.
 
 ## Was versteht man unter der Idempotenz einer Nachricht?
++ Das mehrmalige empfangen einer Idempotenten Nachricht verändert die Bedeutung der Nachricht nicht.
++ State Messages sind Idempotent, Event Messages nicht.
 
 ## Was versteht man unter der *Permanenz* einer Nachricht? Wann ist eine Nachricht permanent? (2)
++ Wenn ein Node die Nachricht und alle davor versendeten empfangen hat.
 
 ## Was versteht man unter *Dense Timebase*?
++ Für jedes p, q (p < q) aus {Dense Timebase} gibt es ein r, für das gilt: p < r < q.
 
 + Welche Eigenschaften einer solchen Dense Timebase kann man aus den fundamentalen Grenzen
 der Zeitmessung (*Fundamental Limits of Time Measurement*)?
 
 ## Wann spricht man von einem *phasensensitiven*, wann von einem *phaseninsensitiven* Real-Time Image?
++ Ein Phaseninsensitives RT-Image hat eine Temporal Accuracy die länger ist als die Zeit die das nächste
+RT-Image braucht um zu dem Controller zu kommen. Das heißt, es gibt Zeitpunkte, wo der Controller 2 valide
+RT-Images hat.
++ Ein Phasensensitives RT-Image ist invalid bevor das nächst RT-Image (mit der update Frequenz d_update) ankommt.
 
 ## Was versteht man unter *implizieter* und *expliziter* Flusskontrolle? (2)
++ Explizite Flusskontrolle erfolgt durch den Empfänger via spezieller Leitungen (cts) oder über eigene Acknowledge
+Telegramme.
++ Implizite Flusskontrolle wird z.B. in Zeitgesteuerten Protokollen umgesetzt. Die Datenrate ist auf jeden Fall
+a priori bekannt.
 
 + Beschreiben Sie kurz die Eigenschaften jedes dieser Flusskontrollparadigmen.
+
++ Explizit
+	+ Error detection beim Sender
+	+ Thrashing unter hoher Last möglich
++ Implizit
+	+ Error detection beim Receiver
 
 ##  24.06.2013 Frage 2
 
 ## Was versteht manunter TAI und UTC. Charakterisieren Sie diese Standards kurz.
++ (TAI) International Atomic Time
+	+ Definiert die Sekunde als vielfaches des Zerfalls eines speziellen Atoms
+	+ Physical Time Standard
+	+ Chronoscopic
++ (UTC) Universal Time Coordinated
+	+ Astronomical Time Standard
+	+ Die Sekunde entspricht dem TAI Standard
 
 ## Was versteht man unter *G-State*? Wofuer benoetigt man diesen?
++ Siehe oben
 
 ## Welche Interfaces einer Echtzeitkomponente unterschieden wir?
-
 + Beschreiben Sie kurz die Aufgabe und Charakteristik jedes dieser Interfaces.
++ LIF - Linking Interface
+	+ Real time Interface
+	+ Time aware
+	+ Contains RT observations
++ CP - Configuration Planning Interface
+	+ Used to install a new node
++ DM - Diagnostic and Maintainance Interface
+	+ Used to debug Hardware
+	+ Knowledge about internal required
++ Local Interface
+	+ Communication with other nodes
 
 ## Was versteht man unter einem Information Push Interface bzw. einem Information Pull Interface?
++ Ein Information Push Interface sagt dir wann Daten da sind.
++ Ein Information Pull Interface musst du fragen ob es date hat.
 
 ## Charakterisieren Sie die Funktionsweise und Eigenschaften eines ereignisgesteuerten Kommunukationsprotokolls.
++ Messages zu jedem Zeitpunkt möglich
++ Maximum Execution Time und Reading error sind groß
++ Benötigt expliziten Flow Control
++ Error Detection beim Sender
 
 ## Beschreiben Sie zwei Strategien, wie zeitgesteuerte und ereignisgesteuerte Kommunikation kombiniert / integriert werden koennen.
++ TT und ET wechseln sich periodisch ab
++ ET 'on top of' TT
 
 ## Was versteht man unter *Sparse Timebase*? Wofuer wird diese benoetigt?
++ (delta)/(pi) precedent. In einer Sparse Timebase darf nur in der (delta) Phase gesendet werden.
+	+ Sie wird benötigt um in der Kommunikation von 2 Clustern, ohne Synchronisierten Timebases, die
+	Temporale Ordnung der Events zu ermöglichen.
 
 ## Wie lautet die *Synchronisationsbedingung*? Erklaeren Sie diese. (2)
++ (Synchronisations Funktion) + (Drift Rate) < (Precision)
++ Die Synchronisations Funktion hängt von dem Jitter und dem Synchronisationsalgortihmus ab.
++ Die Drift Rate beschreibt die maximale Abweichung der clocks der Nodes.
 
 ## Erklaeren Sie die Funktionsweise eines zeitgesteuerten Kommunikationsprotokolls.
++ Jeder Node bekommt a priori einen Zeitslot in dem er Senden Darf.
 
 + Welche Vorteile bietet die zeitgesteuerte gegenueber der ereignisgesteuerten Kommunikation?
++ Es ist keine identifikations Information notwending, da jede Nachricht aufgrund der Empfangszeit
+eindeutig einem Sender zugeordnet werden kann.
++ Es kann eine Worst Case Latency angegeben werden.
 
 ## Was versteht man unter einem *Simple Task*?
++ Ein Task der keine Synchronisation benötigt und keine Blocking Statements beinhaltet.
++ Zu Beginn sind alle Inputs vorhanden und wenn der Task beendet ist sind alle Outputs vorhanden.
